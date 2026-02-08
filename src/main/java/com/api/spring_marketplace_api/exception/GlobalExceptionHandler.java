@@ -20,12 +20,12 @@ public class GlobalExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex) {
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    public ResponseEntity<ApiError> handleBusinessException(RuntimeException ex) {
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiError(
-                        "ILLEGAL_ARGUMENT",
+                        "BAD_REQUEST",
                         ex.getMessage()
                 ));
     }
@@ -43,9 +43,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiError> handleAccessDenied(AccessDeniedException ex) {
         return ResponseEntity
-                .status(HttpStatus.NOT_ACCEPTABLE)
+                .status(HttpStatus.FORBIDDEN)
                 .body(new ApiError(
-                        "NOT_ACCEPTABLE",
+                        "FORBIDDEN",
                         ex.getMessage()
                 ));
     }
